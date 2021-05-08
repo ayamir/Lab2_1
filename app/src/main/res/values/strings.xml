@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Lab2_1</string>
+
+    <string name="value_apply">应用</string>
+
+    <string name="value_id">id</string>
+    <string name="value_name">name</string>
+    <string name="value_gender">gender</string>
+    <string name="value_department">department</string>
+    <string name="value_salary">salary</string>
+    <string name="value_button">action</string>
+
+    <string name="example_id">1</string>
+    <string name="example_name">Tom</string>
+    <string name="example_gender">male</string>
+    <string name="example_department">computer</string>
+    <string name="example_salary">5400</string>
+
+    <string-array name="actions">
+        <item>添加</item>
+        <item>更新</item>
+        <item>删除</item>
+    </string-array>
+</resources>

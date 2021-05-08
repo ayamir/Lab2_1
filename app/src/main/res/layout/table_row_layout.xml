@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/row_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/et_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:autofillHints="@string/example_id"
+        android:gravity="center"
+        android:inputType="number"
+        tools:ignore="LabelFor" />
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:autofillHints="@string/example_name"
+        android:gravity="center"
+        android:inputType="text"
+        tools:ignore="LabelFor" />
+
+    <EditText
+        android:id="@+id/et_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:autofillHints="@string/example_gender"
+        android:gravity="center"
+        android:inputType="text"
+        tools:ignore="LabelFor" />
+
+    <EditText
+        android:id="@+id/et_department"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:autofillHints="@string/example_department"
+        android:gravity="center"
+        android:inputType="text"
+        tools:ignore="LabelFor" />
+
+    <EditText
+        android:id="@+id/et_salary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:autofillHints="@string/example_department"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        tools:ignore="LabelFor" />
+
+    <Spinner
+        android:id="@+id/action_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:entries="@array/actions"
+        />
+
+</LinearLayout>
