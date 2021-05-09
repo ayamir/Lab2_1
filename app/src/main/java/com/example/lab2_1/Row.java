@@ -1,23 +1,26 @@
 package com.example.lab2_1;
 
 public class Row {
+    public static final int NON = 0;
+    public static final int ADD = 1;
+    public static final int UPD = 2;
+    public static final int DEL = 3;
+    private final int id;
     private boolean isModified;
-    private String id;
     private String name;
     private String gender;
     private String department;
     private String salary;
-    public static final int ADD = 0;
-    public static final int UPD = 1;
-    public static final int DEL = 2;
+    private int action;
 
-    public Row(String id, String name, String gender, String department, String salary) {
+    public Row(int id, String name, String gender, String department, String salary) {
         this.isModified = false;
         this.id = id;
         this.name = name;
         this.gender = gender;
         this.department = department;
         this.salary = salary;
+        this.action = NON;
     }
 
     public boolean isModified() {
@@ -28,12 +31,8 @@ public class Row {
         isModified = modified;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -66,5 +65,13 @@ public class Row {
 
     public void setSalary(String salary) {
         this.salary = salary;
+    }
+
+    public int getAction() {
+        return action;
+    }
+
+    public void setAction(int action) {
+        this.action = action;
     }
 }

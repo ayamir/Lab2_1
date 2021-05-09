@@ -16,7 +16,10 @@
     <string name="example_department">computer</string>
     <string name="example_salary">5400</string>
 
+    <string name="description_apply">APPLY</string>
+
     <string-array name="actions">
+        <item>None</item>
         <item>添加</item>
         <item>更新</item>
         <item>删除</item>

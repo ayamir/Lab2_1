@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/et_id"
+    <TextView
+        android:id="@+id/tv_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:autofillHints="@string/example_id"
         android:gravity="center"
-        android:inputType="number"
         tools:ignore="LabelFor" />
 
     <EditText
@@ -59,7 +58,14 @@
         android:id="@+id/action_spinner"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:entries="@array/actions"
-        />
+        android:entries="@array/actions" />
+
+    <ImageView
+        android:id="@+id/btn_apply"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/apply"
+        android:gravity="fill"
+        android:contentDescription="@string/description_apply" />
 
 </LinearLayout>
