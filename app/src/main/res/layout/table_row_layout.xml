@@ -49,9 +49,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:autofillHints="@string/example_department"
+        android:autofillHints="@string/example_salary"
         android:gravity="center"
-        android:inputType="numberDecimal"
+        android:inputType="text"
         tools:ignore="LabelFor" />
 
     <Spinner
@@ -65,7 +65,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/apply"
-        android:gravity="fill"
-        android:contentDescription="@string/description_apply" />
+        android:contentDescription="@string/description_apply"
+        android:gravity="fill" />
 
 </LinearLayout>

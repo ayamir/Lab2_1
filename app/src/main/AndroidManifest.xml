@@ -15,6 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Lab2_1">
+        <service
+            android:name=".MyIntentService"
+            android:exported="false"></service>
 
         <activity android:name=".MainActivity">
             <intent-filter>

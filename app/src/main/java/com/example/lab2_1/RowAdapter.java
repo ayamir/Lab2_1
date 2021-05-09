@@ -2,8 +2,8 @@ package com.example.lab2_1;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.text.Editable;
@@ -31,7 +31,7 @@ import static com.example.lab2_1.Row.UPD;
 
 public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
     public static final Uri uri = Uri.parse("content://com.example.lab2_0.helper.MyContentProvider/staff");
-    public static final String RECREATE_VIEW = "com.example.lab2_1.broadcast.RECREATE_VIEW";
+    public static final String RECREATE_VIEW = "com.example.lab2_1.action.RECREATE_VIEW";
     private static final int NAME = 1;
     private static final int GENDER = 2;
     private static final int DEPARTMENT = 3;
@@ -41,6 +41,16 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
 
     public RowAdapter(List<Row> rows) {
         RowAdapter.rows = rows;
+    }
+
+    public static ContentValues getContentValues(Row element) {
+        ContentValues cv = new ContentValues();
+        cv.put(MainActivity.InfoEntry.COLUMN_NAME, element.getName());
+        cv.put(MainActivity.InfoEntry.COLUMN_GENDER, element.getGender());
+        cv.put(MainActivity.InfoEntry.COLUMN_DEPARTMENT, element.getDepartment());
+        cv.put(MainActivity.InfoEntry.COLUMN_SALARY, element.getSalary());
+
+        return cv;
     }
 
     @Override
@@ -115,10 +125,8 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
                     ContentValues cvUpd = getContentValues(element);
                     int updCode = contentResolver.update(uri, cvUpd, MainActivity.InfoEntry.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
                     if (updCode == 1) {
-                        updateUI(contentResolver);
-                        Intent reCreate = new Intent();
-                        reCreate.setAction(RECREATE_VIEW);
-                        v.getContext().sendBroadcast(reCreate);
+                        reQueryAndUpdateUI(contentResolver);
+                        sendRebindIntent(v.getContext());
                     }
                 } else {
                     Toast.makeText(v.getContext(), "您还没有做出修改！", Toast.LENGTH_SHORT).show();
@@ -126,52 +134,29 @@ public class RowAdapter extends RecyclerView.Adapter<RowAdapter.RowViewHolder> {
             } else if (op == DEL) {
                 int delCode = contentResolver.delete(uri, MainActivity.InfoEntry.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
                 if (delCode == 1) {
-                    updateUI(contentResolver);
-                    Intent reCreate = new Intent();
-                    reCreate.setAction(RECREATE_VIEW);
-                    v.getContext().sendBroadcast(reCreate);
+                    reQueryAndUpdateUI(contentResolver);
+                    sendRebindIntent(v.getContext());
                 }
             } else if (op == ADD) {
                 ContentValues cvAdd = getContentValues(element);
                 Uri addCode = contentResolver.insert(uri, cvAdd);
                 Log.e(TAG, "add uri = " + addCode);
-                updateUI(contentResolver);
-                Intent reCreate = new Intent();
-                reCreate.setAction(RECREATE_VIEW);
-                v.getContext().sendBroadcast(reCreate);
+                reQueryAndUpdateUI(contentResolver);
+                sendRebindIntent(v.getContext());
             }
         });
     }
 
-    private void updateUI(ContentResolver contentResolver) {
-        notifyItemRangeRemoved(0, rows.size());
-        rows.clear();
-        Cursor cursor = contentResolver.query(uri, null, null, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    int newId = cursor.getInt(cursor.getColumnIndex("id"));
-                    String name = cursor.getString(cursor.getColumnIndex("name"));
-                    String gender = cursor.getString(cursor.getColumnIndex("gender"));
-                    String department = cursor.getString(cursor.getColumnIndex("department"));
-                    String salary = cursor.getString(cursor.getColumnIndex("salary"));
-                    rows.add(new Row(newId, name, gender, department, salary));
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-        }
-        notifyItemRangeInserted(0, rows.size());
-
+    private void sendRebindIntent(Context context) {
+        Intent reCreate = new Intent();
+        reCreate.setAction(RECREATE_VIEW);
+        context.sendBroadcast(reCreate);
     }
 
-    private ContentValues getContentValues(Row element) {
-        ContentValues cv = new ContentValues();
-        cv.put(MainActivity.InfoEntry.COLUMN_NAME, element.getName());
-        cv.put(MainActivity.InfoEntry.COLUMN_GENDER, element.getGender());
-        cv.put(MainActivity.InfoEntry.COLUMN_DEPARTMENT, element.getDepartment());
-        cv.put(MainActivity.InfoEntry.COLUMN_SALARY, element.getSalary());
-
-        return cv;
+    private void reQueryAndUpdateUI(ContentResolver contentResolver) {
+        notifyItemRangeRemoved(0, rows.size());
+        MainActivity.queryDB(contentResolver, rows);
+        notifyItemRangeInserted(0, rows.size());
     }
 
     @Override

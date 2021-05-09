@@ -1,6 +1,10 @@
 package com.example.lab2_1;
 
-public class Row {
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
+
+public class Row implements Serializable {
     public static final int NON = 0;
     public static final int ADD = 1;
     public static final int UPD = 2;
@@ -73,5 +77,11 @@ public class Row {
 
     public void setAction(int action) {
         this.action = action;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "id = " + id + ", name = " + name + ", gender = " + gender + ", department = " + department + ", salary = "  + salary;
     }
 }
