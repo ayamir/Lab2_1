@@ -111,7 +111,6 @@ public class MyIntentService extends IntentService {
             }
         }
         try {
-            //BufferedWriter for performance, true to set append to file flag
             BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
             buf.append(text);
             buf.newLine();
