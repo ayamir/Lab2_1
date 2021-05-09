@@ -8,6 +8,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import static com.example.lab2_1.RowAdapter.RECREATE_VIEW;
 import static com.example.lab2_1.RowAdapter.getContentValues;
 import static com.example.lab2_1.RowAdapter.rows;
@@ -63,23 +68,56 @@ public class MyIntentService extends IntentService {
 
     private void handleActionCheckNegative(Row row) {
         Log.e(TAG, "handleActionCheckNegative row: " + row.toString());
+        String oriSalary = row.getSalary();
         row.setSalary("");
         ContentValues cv = getContentValues(row);
         ContentResolver contentResolver = getContentResolver();
-        Log.e(TAG, "handleActionCheckNegative: contentValue: "
+        Log.e(TAG, "record info: "
+                + "\n id = " + row.getId()
                 + "\n name = " + cv.getAsString(MainActivity.InfoEntry.COLUMN_NAME)
                 + "\n gender = " + cv.getAsString(MainActivity.InfoEntry.COLUMN_GENDER)
                 + "\n department = " + cv.getAsString(MainActivity.InfoEntry.COLUMN_DEPARTMENT)
-                + "\n salary = " + cv.getAsString(MainActivity.InfoEntry.COLUMN_SALARY)
+                + "\n original salary = " + oriSalary
         );
         int updCode = contentResolver.update(uri, cv, MainActivity.InfoEntry.COLUMN_ID + "=?", new String[]{String.valueOf(row.getId())});
         if (updCode == 1) {
+            long timeStamp = System.currentTimeMillis();
+            String log = "Unix TimeStamp is " + timeStamp + ", Record Info is: "
+                    + "\n id = " + row.getId()
+                    + "\n name = " + cv.getAsString(MainActivity.InfoEntry.COLUMN_NAME)
+                    + "\n gender = " + cv.getAsString(MainActivity.InfoEntry.COLUMN_GENDER)
+                    + "\n department = " + cv.getAsString(MainActivity.InfoEntry.COLUMN_DEPARTMENT)
+                    + "\n original salary = " + oriSalary;
+            appendLog(log);
             MainActivity.queryDB(contentResolver, rows);
             Intent reBind = new Intent();
             reBind.setAction(RECREATE_VIEW);
             sendBroadcast(reBind);
         } else {
             Log.e(TAG, "handleActionCheckNegative: update error");
+        }
+    }
+
+    public void appendLog(String text) {
+        File logFile = new File(getFilesDir().getAbsolutePath() + "/check.log");
+        if (!logFile.exists()) {
+            try {
+                boolean isCreated = logFile.createNewFile();
+                if (!isCreated) {
+                    Log.e(TAG, "appendLog failed!");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            //BufferedWriter for performance, true to set append to file flag
+            BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+            buf.append(text);
+            buf.newLine();
+            buf.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
